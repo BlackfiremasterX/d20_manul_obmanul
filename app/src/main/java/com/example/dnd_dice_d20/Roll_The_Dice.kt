@@ -15,27 +15,8 @@ import kotlin.random.nextInt
 
 class Roll_The_Dice : AppCompatActivity() {
     private var SpeedCount = 0
-    private var money = 0
     private var soundPool: SoundPool? = null
     private var soundId1: Int = 0
-
-    fun Speedometer(it: View, spid: Int, action: Int)
-    {
-        when(action){
-            1 -> {
-                SpeedCount = SpeedCount/100000 + spid
-                speed.text = SpeedCount!!.toString() + "коп/секунду"
-            }
-            2 -> {
-                SpeedCount = SpeedCount - spid
-                speed.text = SpeedCount!!.toString() + "коп/секунду"
-
-
-
-            }
-        }
-
-    }
 
     fun playSound(sound: Int) {
         var soundId = 0
@@ -44,18 +25,7 @@ class Roll_The_Dice : AppCompatActivity() {
             else -> print("Error!")
         }
         soundPool?.play(soundId, 1F, 1F, 0, 0, 1F)
-
-
     }
-
-    fun balance(){
-        while (1 == 1){
-            money = money + SpeedCount
-            balance.text = money!!.toString()
-        }
-    }
-
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -66,7 +36,6 @@ class Roll_The_Dice : AppCompatActivity() {
         soundPool = SoundPool(1, AudioManager.STREAM_MUSIC, 0)
         soundId1 = soundPool!!.load(baseContext, R.raw.lebovsky, 1)
 
-        balance()
         findViewById<ImageView>(R.id.dnd_dice).setOnClickListener {
 
             MainScope().launch {
@@ -79,21 +48,12 @@ class Roll_The_Dice : AppCompatActivity() {
                 var RotationY = 0F
                 var Rotation_value = arrayListOf(120, 150, 180, 210, 240).random()
 
-                Speedometer(it, Rotation_value/10, 1)
-
 
                 for (i in 1..4) {
 
-                    RandomNumber = Random.nextInt(1..6)
+                    RandomNumber = Random.nextInt(1..20)
                     RotateDirection = arrayListOf(-1, 1).random()
                     Rotate_OX_OY = Random.nextBoolean()
-
-
-//                    for(i in 0..29)
-//                    {
-//                        it.rotation =  it.rotation+1
-//                        delay(1)
-//                    }
 
                     for (i in 0..29) {
                         if (Rotate_OX_OY) {
@@ -119,6 +79,20 @@ class Roll_The_Dice : AppCompatActivity() {
                             4 -> R.drawable.four
                             5 -> R.drawable.five
                             6 -> R.drawable.six
+                            7 -> R.drawable.seven
+                            8 -> R.drawable.eight
+                            9 -> R.drawable.nine
+                            10 -> R.drawable.ten
+                            11 -> R.drawable.eleven
+                            12 -> R.drawable.twelve
+                            13 -> R.drawable.thirteen
+                            14 -> R.drawable.fourteen
+                            15 -> R.drawable.fifteen
+                            16 -> R.drawable.sixteen
+                            17 -> R.drawable.seventeen
+                            18 -> R.drawable.eighteen
+                            19 -> R.drawable.nineteen
+                            20 -> R.drawable.twenty
                             else -> R.drawable.ic_launcher_foreground
                         }
                     )
@@ -138,31 +112,11 @@ class Roll_The_Dice : AppCompatActivity() {
                             RotationY++
                         }
                     }
-                    //конец цикла вращений(4раза)
 
-
-
-
-                    rotationX.text = RotationX.toString()
-                    rotationY.text = RotationY.toString()
-
-
-                    //
                 }
-                Speedometer(it, Rotation_value/10, 2)
-
-                if(SpeedCount < 0){
+                if (SpeedCount < 0) {
                     playSound(1)
                 }
-                //цикл открутки
-//                if (RotationX.toInt() == 540) {
-//                    for (i in 1..180) {
-//                        it.rotationX = it.rotationX - 1
-//                        delay(RotationTime)
-//                    }
-//                }
-
-
             }
         }
 
