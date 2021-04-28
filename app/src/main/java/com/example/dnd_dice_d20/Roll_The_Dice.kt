@@ -5,6 +5,7 @@ import android.media.SoundPool
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import android.widget.FrameLayout
 import android.widget.ImageView
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.MainScope
@@ -97,16 +98,20 @@ class Roll_The_Dice : AppCompatActivity() {
 
 
         findViewById<ImageView>(R.id.dnd_dice).setOnClickListener {
-
             MainScope().launch {
 
+                //Блок инициализации
+
+                //Random
                 var RandomNumber = Random.nextInt(1..6)
                 var RotateDirection = arrayListOf(-1, 1).random()
                 var Rotate_OX_OY = Random.nextBoolean()
-                var RotationTime = (5L..10L).random()
-                var RotationX = 0F
-                var RotationY = 0F
+                var RotationTime = (6L..8L).random()
                 var Rotation_value = arrayListOf(120, 150, 180, 210, 240).random()
+
+                //Constant
+                var ScaleValue = 0.015F
+
 
 
                 for (i in 1..4) {
@@ -116,16 +121,17 @@ class Roll_The_Dice : AppCompatActivity() {
                     Rotate_OX_OY = Random.nextBoolean()
 
                     for (i in 0..29) {
+                        it.scaleX = it.scaleX + ScaleValue
+                        it.scaleY = it.scaleY + ScaleValue
+
                         if (Rotate_OX_OY) {
                             it.rotationX = it.rotationX + RotateDirection * 3
                             it.rotation = it.rotation + Rotation_value / 30
                             delay(RotationTime)
-                            RotationX++
                         } else {
                             it.rotationY = it.rotationY + RotateDirection * 3
                             it.rotation = it.rotation + Rotation_value / 30
                             delay(RotationTime)
-                            RotationY++
                         }
                     }
 
@@ -159,28 +165,64 @@ class Roll_The_Dice : AppCompatActivity() {
 
 
                     for (i in 30..59) {
+                        it.scaleX = it.scaleX - ScaleValue
+                        it.scaleY = it.scaleY - ScaleValue
+
                         if (Rotate_OX_OY) {
 
                             it.rotationX = it.rotationX + RotateDirection * 3
                             it.rotation = it.rotation + Rotation_value / 30
                             delay(RotationTime)
-                            RotationX++
                         } else {
                             it.rotationY = it.rotationY + RotateDirection * 3
                             it.rotation = it.rotation + Rotation_value / 30
                             delay(RotationTime)
-                            RotationY++
                         }
                     }
                 }
 
-            playSound(RandomNumber)
-
+                playSound(RandomNumber)
+                for(i in 1..RandomNumber) {
+                    Animate_Manul()
+                    delay(1500)
+                }
 
             }
         }
+    }
 
+    private fun Animate_Manul()
+    {
+        MainScope().launch {
 
+            for (i in 1..10) {
+                (manul_animation.layoutParams as FrameLayout.LayoutParams).leftMargin += 120
+
+                box_animation.removeView(manul_animation)
+                box_animation.addView(manul_animation)
+                findViewById<ImageView>(R.id.manul_animation).setImageResource(
+                    when (i) {
+                        1 -> R.drawable.manul_five
+                        2 -> R.drawable.manul_two
+                        3 -> R.drawable.manul_three
+                        4 -> R.drawable.manul_four
+                        5 -> R.drawable.manul_five
+                        6 -> R.drawable.manul_six
+                        7 -> R.drawable.manul_seven
+                        8 -> R.drawable.manul_eight
+                        9 -> R.drawable.manul_nine
+                        10 -> R.drawable.manul_ten
+                        else -> R.drawable.ic_launcher_background
+                    }
+                )
+                delay(50)
+            }
+
+            (manul_animation.layoutParams as FrameLayout.LayoutParams).leftMargin -= 1200
+
+            box_animation.removeView(manul_animation)
+            box_animation.addView(manul_animation)
+        }
 
 
     }
